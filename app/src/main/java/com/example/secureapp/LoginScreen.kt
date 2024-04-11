@@ -83,7 +83,7 @@ fun LoginScreen(navController: NavController, context: Context) {
 }
 
 private fun authentication(navController: NavController, personID: String, password: String, context: Context) {
-    var users = mapOf(
+    val users = mapOf(
         "SE1234" to "pass1234",
         "HG6589" to "pass6589"
     )
