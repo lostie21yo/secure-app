@@ -34,62 +34,28 @@ import com.example.secureapp.ui.theme.ThemeBlue
 @Composable
 fun ShiftScreenList(navController: NavController, context: Context, id: String) {
     Column (modifier = Modifier.fillMaxSize()) {
-        val names = mapOf(
-            "SE1234" to "Константин",
-            "HG6589" to "Андрей"
-        )
-        var name = names[id]
-        if(name == null) name = "unknown"
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            .background(ThemeBlue),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-//            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-            ){
-            Image(painter = painterResource(id = R.drawable.menu_bar), contentDescription = "Меню",
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(50.dp)
-                    .clickable {
-                        Toast
-                            .makeText(context, "Меню открыто", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                ,)
-            Text(text = name, color = Color.White, fontSize = 24.sp)
-            Image(painter = painterResource(id = R.drawable.exit), contentDescription = "Выход",
-                modifier = Modifier
-                    .padding(15.dp)
-                    .size(30.dp)
-                    .clickable { navController.navigate(Routes.loginScreen) }
-                ,)
-        }
-
+        Header(navController, context, id)
         Column(modifier = Modifier
             .verticalScroll(rememberScrollState())
             .weight(weight = 1f, fill = false)) {
-            ShiftListItem(context,"ТЦ Европа", "Ленина, 7", "11.04.2024", "09:00", "20:00")
-            ShiftListItem(context, "Банк Гарант", "Советская, 235А", "12.04.2024", "08:00", "19:00")
+            ShiftListItem(context, navController, id,"ТЦ Европа", "Ленина, 7", "11.04.2024", "09:00", "20:00")
+            ShiftListItem(context, navController, id, "Банк Гарант", "Советская, 235А", "12.04.2024", "08:00", "19:00")
         }
 
     }
 }
 
 @Composable
-fun ShiftListItem(context: Context, place: String, address: String, date: String, start: String, end: String,) {
+fun ShiftListItem(context: Context, navController: NavController, id: String, place: String, address: String, date: String, start: String, end: String,) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
             .padding(6.dp)
-            .clickable {
-                Toast
-                    .makeText(context, "Смена $place", Toast.LENGTH_LONG)
-                    .show()
-            },
+            .clickable { navController.navigate(
+                Routes.shiftScreen+"/${id}/${place}/${address}/${date}/${start}/${end}"
+            )},
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
     ) {

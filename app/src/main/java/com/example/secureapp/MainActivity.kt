@@ -3,9 +3,11 @@ package com.example.secureapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 
 class MainActivity : ComponentActivity() {
@@ -19,6 +21,27 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.shiftScreenList+"/{id}", ) {
                     val id = it.arguments?.getString("id")
                     ShiftScreenList(navController, context, id?: "N/A")
+                }
+                composable(Routes.shiftScreen+"/{id}/{place}/{address}/{date}/{start}/{end}",
+                        arguments = listOf(
+                            navArgument("id") { type = NavType.StringType },
+                            navArgument("place") { type = NavType.StringType },
+                            navArgument("address") { type = NavType.StringType },
+                            navArgument("date") { type = NavType.StringType },
+                            navArgument("start") { type = NavType.StringType },
+                            navArgument("end") { type = NavType.StringType }
+                        )
+                    ) {backStackEntry ->
+                        val id = backStackEntry.arguments?.getString("id")
+                        val place = backStackEntry.arguments?.getString("place")
+                        val address = backStackEntry.arguments?.getString("address")
+                        val date = backStackEntry.arguments?.getString("date")
+                        val start = backStackEntry.arguments?.getString("start")
+                        val end = backStackEntry.arguments?.getString("end")
+
+                    ShiftScreen(context, navController,  id?: "N/A", place?: "N/A",
+                        address?: "N/A", date?: "N/A",
+                        start?: "N/A", end?: "N/A")
                 }
             })
         }
