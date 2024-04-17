@@ -8,7 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-
+import com.example.secureapp.utils.LoginScreen
+import com.example.secureapp.utils.Routes
+import com.example.secureapp.utils.ShiftScreen
+import com.example.secureapp.utils.ShiftScreenList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +25,8 @@ class MainActivity : ComponentActivity() {
                     val id = it.arguments?.getString("id")
                     ShiftScreenList(navController, context, id?: "N/A")
                 }
-                composable(Routes.shiftScreen+"/{id}/{place}/{address}/{date}/{start}/{end}",
+                composable(
+                    Routes.shiftScreen+"/{id}/{place}/{address}/{date}/{start}/{end}",
                         arguments = listOf(
                             navArgument("id") { type = NavType.StringType },
                             navArgument("place") { type = NavType.StringType },

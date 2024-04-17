@@ -1,4 +1,4 @@
-package com.example.secureapp
+package com.example.secureapp.utils
 
 object Routes {
     var loginScreen = "login_screen"
