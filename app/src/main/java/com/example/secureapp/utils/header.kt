@@ -31,7 +31,7 @@ fun Header(navController: NavController, context: Context, id: String){
     // заглушка БД, таблица имена (можно совместить с таблицей users)
     val names = mapOf(
         "SE1234" to "Константин",
-        "HG6589" to "Андрей"
+        "HG5678" to "Андрей"
     )
     var name = names[id]
     if(name == null) name = "unknown"

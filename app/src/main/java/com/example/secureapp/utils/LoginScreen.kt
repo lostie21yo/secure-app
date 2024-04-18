@@ -33,11 +33,11 @@ import com.example.secureapp.R
 fun LoginScreen(navController: NavController, context: Context) {
 
     var personID by remember {
-        mutableStateOf("SE1234") // по умолчанию
+        mutableStateOf("") // по умолчанию
     }
 
     var password by remember {
-        mutableStateOf("pass1234") // по умолчанию
+        mutableStateOf("") // по умолчанию
     }
 
     Column (
@@ -87,7 +87,7 @@ private fun authentication(navController: NavController, personID: String, passw
     // "заглушка" базы данных, таблица users (id юзера и пароль)
     val users = mapOf(
         "SE1234" to "pass1234",
-        "HG6589" to "pass6589"
+        "HG5678" to "pass5678"
     )
     if(personID in users.keys && password == users[personID])
         navController.navigate(Routes.shiftScreenList +"/${personID}")
