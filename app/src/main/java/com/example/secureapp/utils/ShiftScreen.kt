@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +38,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun ShiftScreen(context: Context, navController: NavController, id: String, place: String,
-                address: String, date: String, start: String, end: String,) {
+                address: String, date: String, start: String, end: String, isWorking: Boolean) {
     Column {
         Header(navController, context, id)
 
@@ -83,7 +84,7 @@ fun ShiftScreen(context: Context, navController: NavController, id: String, plac
                 Column(modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var checked = remember { mutableStateOf(false) }
+                    var checked = rememberSaveable { mutableStateOf(isWorking) }
                     MyButton(checked)
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -114,7 +115,7 @@ fun MyButton(checked:  MutableState<Boolean>){
             .size(180.dp)
             .clip(CircleShape)
             .background(
-                if (checked.value) Color(0xff7d0000)
+                if (checked.value) Color(0xFFBA0000)
                 else Color(0xff007f00)
             )
             .toggleable(value = checked.value, onValueChange = { checked.value = it }),

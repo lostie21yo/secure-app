@@ -1,13 +1,11 @@
 package com.example.secureapp.utils
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,15 +26,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 // заглушка базы данных, таблица "смены"
-val shifts = mapOf(
-    "SE1234" to arrayOf(
-        arrayOf("ТЦ Европа", "Ленина, 7", "11.04.2024", "09:00", "20:00"),
-        arrayOf("Клуб Десятка", "10 лет октября, 92", "12.04.2024", "18:00", "04:00")
+val shifts = mutableMapOf(
+    "SE1234" to mutableListOf(
+        mutableListOf("ТЦ Европа", "Ленина, 7", "11.04.2024", "09:00", "20:00", "out"),
+        mutableListOf("Клуб Десятка", "10 лет октября, 92", "12.04.2024", "18:00", "04:00", "in")
     ),
-    "HG6589" to arrayOf(
-        arrayOf("Банк Гарант", "Советская, 235А", "12.04.2024", "08:00", "19:00"),
-        arrayOf("Парковка 5STARS", "Пушкинская, 65", "14.04.2024", "10:00", "22:00"),
-        arrayOf("Отель Корстон", "Николая Ершова, 1А", "15.04.2024", "08:00", "20:00")
+    "HG6589" to mutableListOf(
+        mutableListOf("Банк Гарант", "Советская, 235А", "12.04.2024", "08:00", "19:00", "out"),
+        mutableListOf("Парковка 5STARS", "Пушкинская, 65", "14.04.2024", "10:00", "22:00", "out"),
+        mutableListOf("Отель Корстон", "Николая Ершова, 1А", "15.04.2024", "08:00", "20:00", "out")
     ),
 )
 
@@ -56,7 +54,9 @@ fun ShiftScreenList(
                 }
             }
             else {
-                Column(modifier = Modifier.fillMaxWidth().height(600.dp),
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(600.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -68,21 +68,25 @@ fun ShiftScreenList(
 }
 
 @Composable
-fun ShiftListItem(context: Context, navController: NavController, id: String, shift: Array<String>) {
+fun ShiftListItem(context: Context, navController: NavController, id: String, shift: MutableList<String>) {
     val place = shift[0]
     val address = shift[1]
     val date = shift[2]
     val start = shift[3]
     val end = shift[4]
+    val isWorking = when(shift[5]) {
+        "in" -> true
+        else -> false
+    }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(130.dp)
             .padding(8.dp)
             .clickable {
                 navController.navigate(
-                    Routes.shiftScreen + "/${id}/${place}/${address}/${date}/${start}/${end}"
+                    Routes.shiftScreen + "/${id}/${place}/${address}/${date}/${start}/${end}/${isWorking}"
                 )
             },
         shape = RoundedCornerShape(15.dp),
@@ -91,23 +95,33 @@ fun ShiftListItem(context: Context, navController: NavController, id: String, sh
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        ){
+        ) {
             Row() {
-                Column(modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .fillMaxHeight(),
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .fillMaxHeight(),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(text = place, fontSize = 22.sp)
                     Text(text = address, fontSize = 18.sp)
+                    var text: String
+                    var color: Color
+                    when(isWorking){
+                        true -> {text = "На смене"; color = Color(0xff007f00)}
+                        else -> {text = "Не на смене"; color = Color(0xFFBA0000)}
+                    }
+                    Text(text = text, color = color, fontSize = 18.sp)
                 }
-                Column(modifier = Modifier.fillMaxSize(),
+                Column(
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(text = date, fontSize = 18.sp)
                     Text(text = "$start - $end", fontSize = 18.sp)
                 }
+
             }
         }
     }

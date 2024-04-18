@@ -26,14 +26,16 @@ class MainActivity : ComponentActivity() {
                     ShiftScreenList(navController, context, id?: "N/A")
                 }
                 composable(
-                    Routes.shiftScreen+"/{id}/{place}/{address}/{date}/{start}/{end}",
+                    Routes.shiftScreen+"/{id}/{place}/{address}/{date}/{start}/{end}/{isWorking}",
                         arguments = listOf(
                             navArgument("id") { type = NavType.StringType },
                             navArgument("place") { type = NavType.StringType },
                             navArgument("address") { type = NavType.StringType },
                             navArgument("date") { type = NavType.StringType },
                             navArgument("start") { type = NavType.StringType },
-                            navArgument("end") { type = NavType.StringType }
+                            navArgument("end") { type = NavType.StringType },
+                            navArgument("isWorking") { type = NavType.BoolType },
+
                         )
                     ) {backStackEntry ->
                         val id = backStackEntry.arguments?.getString("id")
@@ -42,10 +44,12 @@ class MainActivity : ComponentActivity() {
                         val date = backStackEntry.arguments?.getString("date")
                         val start = backStackEntry.arguments?.getString("start")
                         val end = backStackEntry.arguments?.getString("end")
+                        val isWorking = backStackEntry.arguments?.getBoolean("isWorking")
+
 
                     ShiftScreen(context, navController,  id?: "N/A", place?: "N/A",
                         address?: "N/A", date?: "N/A",
-                        start?: "N/A", end?: "N/A")
+                        start?: "N/A", end?: "N/A", isWorking?: false)
                 }
             })
         }
